@@ -42,8 +42,8 @@ ip addr
 
 示例：
 
-- Header 节点 IP：`192.168.110.107`
-- Worker 节点 IP：`192.168.110.103`
+- Header 节点 IP：`192.*.*.107`
+- Worker 节点 IP：`192.*.*.103`
 - 使用网卡：`eno1`
 
 ### 2. 指定 NCCL / GLOO 通信网卡（所有节点）
@@ -68,18 +68,18 @@ export NCCL_SOCKET_IFNAME=eno1
 - **放行全端口范围**
 - **确保内网环境安全**
 
-### Header → Worker（在 192.168.110.103 上执行）
+### Header → Worker（在 192.*.*.103 上执行）
 
 ```bash
-sudo ufw allow from 192.168.110.107
+sudo ufw allow from 192.*.*.107
 sudo ufw reload
 sudo ufw status
 ```
 
-### Worker → Header（在 192.168.110.107 上执行）
+### Worker → Header（在 192.*.*.107 上执行）
 
 ```bash
-sudo ufw allow from 192.168.110.103
+sudo ufw allow from 192.*.*.103
 sudo ufw reload
 sudo ufw status
 ```
@@ -96,7 +96,7 @@ sudo ufw status
 ray stop --force
 ray start \
   --head \
-  --node-ip-address=192.168.110.107 \
+  --node-ip-address=192.*.*.107 \
   --port=6379 \
   --dashboard-host=0.0.0.0
 ```
@@ -106,7 +106,7 @@ ray start \
 先测试端口连通性：
 
 ```bash
-nc -vz 192.168.110.107 6379
+nc -vz 192.168.*.* 6379
 ```
 
 确认无误后启动 Worker：
@@ -114,8 +114,8 @@ nc -vz 192.168.110.107 6379
 ```bash
 ray stop --force
 ray start \
-  --address=192.168.110.107:6379 \
-  --node-ip-address=192.168.110.103
+  --address=192.*.*.107:6379 \
+  --node-ip-address=192.*.*.103
 ```
 
 ### 3. 检查集群状态（任一节点）
